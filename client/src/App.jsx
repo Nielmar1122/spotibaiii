@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { PlayerProvider } from './context/PlayerContext';
-import AppShell from './components/layout/Appshell';
+import AppShell from './components/layout/AppShell';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import LyricsPage from './pages/LyricsPage';
