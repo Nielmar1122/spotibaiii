@@ -19,26 +19,39 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// CORS (Allow both localhost and the live Render URL)
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://spotibaiii.onrender.com'],
   credentials: true
 }));
-
-// THIS IS THE EXACT LINE THAT ALLOWS THE BROWSER TO SEE THE FILES
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/api/playlists', playlistRoutes);
-app.use('/api/ads', adRoutes);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// THIS IS THE EXACT LINE THAT ALLOWS THE BROWSER TO SEE THE FILES (Locally)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/songs', songRoutes);
+app.use('/api/playlists', playlistRoutes);
+app.use('/api/ads', adRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Spotibaiii API is running...');
-});
+// --- PRODUCTION STATIC FILE SERVING ---
+if (process.env.NODE_ENV === 'production') {
+  // Serve the built React app
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  // Any route that doesn't match the API goes to React
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+  });
+} else {
+  // Local development root route
+  app.get('/', (req, res) => {
+    res.send('Spotibaiii API is running...');
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 
