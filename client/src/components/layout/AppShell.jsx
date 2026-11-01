@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 import PlayerBar from '../player/PlayerBar';
 import AdOverlay from '../modals/AdOverlay';
+import MobileNav from './MobileNav';
 
 export default function AppShell() {
   return (
@@ -17,6 +18,7 @@ export default function AppShell() {
         </main>
       </div>
       <PlayerBar />
+      <MobileNav />
       <AdOverlay />
     </div>
   );
