@@ -68,6 +68,9 @@ export function AuthProvider({ children }) {
       const updatedUser = { ...user, avatar: res.data.avatar };
       setUser(updatedUser);
       localStorage.setItem('spotibaiii_user', JSON.stringify(updatedUser));
+
+      window.location.reload();
+
     } catch (err) {
       console.error("Failed to upload avatar", err);
     }
